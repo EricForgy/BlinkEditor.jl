@@ -5,6 +5,12 @@ using Blink, DevTools
 function editor()
 
 w = Window()
+id,cb = Blink.callback!()
+# Wait for blink.js to load
+while haskey(Blink.callbacks,id)
+    js_(w,JSString("try {Blink.cb($id);} catch(err) {}"))
+    sleep(0.5)
+end
 tools(w)
 for f in ["codemirror.min.js" "codemirror.min.css"]
     load!(w, "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/$f")
