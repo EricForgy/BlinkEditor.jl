@@ -11,13 +11,12 @@ while haskey(Blink.callbacks,id)
     js_(w,JSString("try {Blink.cb($id);} catch(err) {}"))
     sleep(0.5)
 end
+body!(w,"", fade = false)
 tools(w)
 for f in ["codemirror.min.js" "codemirror.min.css"]
     load!(w, "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/$f")
 end
 load!(w,Pkg.dir("DevTools","res","julia.js"))
-body!(w,"", fade = false)
-opt = Dict("mode"=>"julia2","lineNumbers"=>true)
 script = """
 var cm = CodeMirror(document.body, {"mode": "julia2", "lineNumbers": true});
 CodeMirror.keyMap.default["Shift-Enter"] = function(cm) {Blink.msg("eval",{"code": cm.getSelection()});};
